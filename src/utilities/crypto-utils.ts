@@ -1,5 +1,5 @@
-const assert = require("assert");
-const crypto = require("crypto");
+import assert from"assert"
+import crypto from"crypto"
 
 const algorithm = "aes256";
 const inputEncoding = "utf8";
@@ -9,7 +9,7 @@ const iv = crypto.randomBytes(ivlength);
 const secret = "ciw7p02f70000ysjon7gztjn7c2x7GfJ";
 const key = Buffer.from(secret, "latin1");
 
-function encryptToken(text) {
+function encryptToken(text:string) {
   const cipher = crypto.createCipheriv(algorithm, key, iv);
   let ciphered = cipher.update(text, inputEncoding, outputEncoding);
   ciphered += cipher.final(outputEncoding);
@@ -17,9 +17,9 @@ function encryptToken(text) {
   return cipherText;
 }
 
-function decryptToken(cipherText) {
+function decryptToken(cipherText:string) {
   const components = cipherText.split(":");
-  const iv_from_cipherText = Buffer.from(components.shift(), outputEncoding);
+  const iv_from_cipherText = Buffer.from(/**components.shift(),*/ outputEncoding);
   const decipher = crypto.createDecipheriv(algorithm, key, iv_from_cipherText);
   let deciphered = decipher.update(
     components.join(":"),
@@ -30,7 +30,7 @@ function decryptToken(cipherText) {
   return deciphered;
 }
 
-module.exports = {
+export default  {
   encryptToken,
   decryptToken,
 };

@@ -1,13 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const Slots = require("./slots.js");
+import mongoose, { Schema, InferSchemaType }  from "mongoose";
 
-/**
- * name: The name of the dentist
- * email: The email address of the dentist
- * password: The password of the dentist (hashed)
- * slot: The time slot of the dentist
- */
+
+
 const dentistSchema = new Schema({
     firstName: {
         type: String,
@@ -37,4 +31,6 @@ const dentistSchema = new Schema({
     
 });
 
-module.exports = mongoose.model("Dentists", dentistSchema);
+export default mongoose.model("Dentist", dentistSchema);
+
+export type Dentist = InferSchemaType<typeof dentistSchema>;

@@ -1,4 +1,4 @@
-let mongoose = require("mongoose");
+import mongoose from"mongoose";
 
 // Variables
 let mongoURI = process.env.MONGODB_URI;

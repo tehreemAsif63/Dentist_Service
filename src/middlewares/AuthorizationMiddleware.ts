@@ -1,7 +1,7 @@
-const encryption = require("../utilities/crypto-utils");
+import encryption from "../utilities/crypto-utils"
 
-async function authorizationMiddleware(req, res, next) {
-  const ispublic = req.originalUrl.toLowerCase().includes("/public");
+async function authorizationMiddleware(message:string) {
+  /**const ispublic = req.originalUrl.toLowerCase().includes("/public");
   if (ispublic) {
     next();
     return;
@@ -18,6 +18,6 @@ async function authorizationMiddleware(req, res, next) {
     return;
   }
 
-  next();
+  next();*/
 }
-module.exports = authorizationMiddleware;
+export default authorizationMiddleware;
