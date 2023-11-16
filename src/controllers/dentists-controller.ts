@@ -5,12 +5,12 @@ import bcrypt from "bcrypt";
 import { MessageHandler } from "../utilities/types-utils";
 
 const createDentist: MessageHandler = async (data) => {
-  const { firstName, lastName, SSN, email, password, admin, postCode, theme } =
+  const { firstName, lastName, SSN, email, password, slot } =
     data;
 
   // validate the data of the patient
   if (
-    !(firstName && lastName && SSN && email && password && admin && postCode)
+    !(firstName && lastName && SSN && email && password )
   ) {
     // throw
     throw new MessageException({
@@ -42,9 +42,9 @@ const createDentist: MessageHandler = async (data) => {
     lastName,
     SSN,
     email,
-    //password: correct password,
-    admin,
-    postCode,
+    password,
+    slot
+    
   });
   const token = jwt.sign({ dentistID: dentist._id, SSN, email }, "secret", {
     expiresIn: "3h",

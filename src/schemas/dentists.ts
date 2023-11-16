@@ -10,7 +10,8 @@ const dentistSchema = new Schema({
     lastName: {
         type: String,
         required: [true, "Name must be entered"]
-    },
+    }, SSN: { type: String, required: true, unique: true },
+    
     email: {
         type: String,
         required: [true, "Email must be set"],
@@ -25,7 +26,7 @@ const dentistSchema = new Schema({
     slot: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Slots",
+            ref: "slots",
         },
     ],
     
