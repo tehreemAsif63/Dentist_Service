@@ -1,6 +1,6 @@
 import mqtt from "mqtt";
 import mongoose from "mongoose";
-import userController from "./controllers/dentists-controller";
+import dentistController from "./controllers/dentists-controller";
 import {
   MessageData,
   MessageHandler,
@@ -11,8 +11,12 @@ const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/Dentists"
 const client = mqtt.connect(process.env.MQTT_URI || "mqtt://localhost:1883");
 
 const messageMapping: { [key: string]: MessageHandler } = {
-  "auth/dentist/create": userController.createDentist,
-  "auth/dentist/login": userController.login,
+  "auth/dentist/create": dentistController.createDentist,
+  "auth/dentist/login": dentistController.login,
+  "auth/dentist/me/id:": dentistController.getDentist,
+  "auth/dentist/update/id:": dentistController.updateDentist,
+  "auth/dentist/delete/id:": dentistController.deleteDentist,
+  "auth/dentist/verify": dentistController.verifyToken,
 };
 
 client.on("connect", () => {

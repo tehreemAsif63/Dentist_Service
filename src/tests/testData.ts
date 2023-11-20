@@ -1,7 +1,6 @@
 const  mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/ToothFerry";
 
 import mongoose from "mongoose";
-import  User from"../schemas/users";
 import  Dentist from"../schemas/dentists";
 import  Slot from"../schemas/slots";
 import  Clinic from"../schemas/clinics";
@@ -37,16 +36,7 @@ async function insertData() {
      }).save();
     console.log("Inserted a test clinic");
 
-    const user = await new User({
-        firstName: "Test",
-        lastName: "User",
-        birthDay: "2023-11-06",
-        postCode: 47141,
-        email: "example@example.com",
-        password: "",
-        admin: false  
-    }).save();
-    console.log("Inserted test user");
+   
 } finally {
     await mongoose.disconnect();
 }

@@ -2,7 +2,7 @@ import DentistSchema, { Dentist } from "../schemas/dentists";
 import { MessageException } from "../exceptions/MessageException";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { MessageHandler } from "../utilities/types-utils";
+import { MessageHandler,MessageData } from "../utilities/types-utils";
 
 const createDentist: MessageHandler = async (data) => {
   const { firstName, lastName, SSN, email, password, slot } =
@@ -97,4 +97,76 @@ const login: MessageHandler = async (data) => {
     });
   }
 };
-export default { createDentist, login };
+
+// return user with a specific ID
+const getDentist:MessageHandler =async  (data)=> {
+  
+  const {dentist_id}= data;
+    const dentist = await DentistSchema.findById(dentist_id)
+
+    if (!dentist) {
+      throw new MessageException({
+        code: 400,
+        message: 'Invalid user ID',
+      })
+    }
+
+    if (dentist === null) {
+      throw new MessageException({
+        code: 400,
+        message: 'User does not exist',
+      })
+    }
+
+    return dentist
+  }
+
+  // delete user with a specific ID
+const deleteDentist: MessageHandler = async  (data)=> {
+  
+    const {dentist_id}= data;
+    
+    const dentist = await DentistSchema.findByIdAndDelete(dentist_id)
+
+    if (!dentist) {
+      throw new MessageException({
+        code: 400,
+        message: 'Invalid id',
+      })
+    }
+
+    if (dentist === null) {
+      throw new MessageException({
+        code: 400,
+        message: 'User does not exist',
+      })
+    }
+
+    return 'User has been deleted'
+  }
+
+
+// updates a dentist with given the ID
+const  updateDentist :MessageHandler=async (data)=> {
+  
+  const { dentist_id, firstName, lastName, SSN, email} = data
+  const dentist = await DentistSchema.findByIdAndUpdate(
+    dentist_id,
+    { firstName, lastName, SSN, email},
+    { new: true }
+  )
+  return dentist
+
+}
+
+const verifyToken:MessageHandler=async (data)=> {
+
+  const parsed = JSON.stringify(data)
+  const token = JSON.parse(parsed)
+  const decoded = jwt.verify(token.token, 'secret')
+  return decoded
+
+}
+
+
+export default { createDentist, login,getDentist,updateDentist,deleteDentist,verifyToken };
