@@ -26,7 +26,7 @@ const createDentist: MessageHandler = async (data) => {
   if ((await registeredDentist).length > 0) {
     throw new MessageException({
       code: 403,
-      message: "dentist already exists",
+      message: "Dentist already exists",
     });
   }
 
@@ -36,24 +36,19 @@ const createDentist: MessageHandler = async (data) => {
       message: "Password is wrong",
     });
   }
-
+  const passwordHash = await bcrypt.hash(`${password}`, 10);
   const dentist = new DentistSchema({
     firstName,
     lastName,
     SSN,
     email,
-    password,
-    slot
-    
+    password: passwordHash
+  
   });
-  const token = jwt.sign({ dentistID: dentist._id, SSN, email }, "secret", {
-    expiresIn: "3h",
-  });
+
   dentist.save();
 
-  //connect to database
-
-  return { ...dentist.$assertPopulated, token };
+  return dentist;
 };
 
 // Dentist login
@@ -82,20 +77,14 @@ const login: MessageHandler = async (data) => {
     });
   }
 
-  // if Dentist exists and passwords match, then create and assign dentist token
-  if (dentist && (await bcrypt.compare(password, dentist.password))) {
-    // Create token
-    const token = jwt.sign({ user_id: dentist._id, SSN, email }, "secret", {
-      expiresIn: "3h",
-    });
-    // save Dentist token
-    return { ...dentist.$assertPopulated, token };
-  } else {
+  // if Dentist exists and passwords match
+  if (!(await bcrypt.compare(password, dentist.password))) {
     throw new MessageException({
       code: 401,
       message: "Invalid records",
     });
   }
+  return dentist;
 };
 
 // return user with a specific ID
@@ -138,11 +127,11 @@ const deleteDentist: MessageHandler = async  (data)=> {
     if (dentist === null) {
       throw new MessageException({
         code: 400,
-        message: 'User does not exist',
+        message: 'Dentist does not exist',
       })
     }
 
-    return 'User has been deleted'
+    return 'Dentist has been deleted'
   }
 
 
