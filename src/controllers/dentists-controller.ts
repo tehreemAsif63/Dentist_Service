@@ -4,13 +4,15 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { MessageHandler,MessageData } from "../utilities/types-utils";
 
-const createDentist: MessageHandler = async (data) => {
-  const { firstName, lastName, SSN, email, password, slot } =
+const createDentist: MessageHandler = async (data,requestInfo) => {
+  
+ 
+  const { firstName, lastName, SSN, email, password,admin, slot } =
     data;
 
   // validate the data of the patient
   if (
-    !(firstName && lastName && SSN && email && password )
+    !(firstName && lastName && SSN && email && password&& typeof admin === "boolean")
   ) {
     // throw
     throw new MessageException({
@@ -42,7 +44,8 @@ const createDentist: MessageHandler = async (data) => {
     lastName,
     SSN,
     email,
-    password: passwordHash
+    password: passwordHash,
+    admin
   
   });
 
@@ -110,13 +113,39 @@ const getDentist:MessageHandler =async  (data)=> {
     return dentist
   }
 
-  // delete user with a specific ID
-const deleteDentist: MessageHandler = async  (data)=> {
+// updates a dentist with given the ID
+const  updateDentist :MessageHandler=async (data,requestInfo)=> {
   
+  if(!requestInfo.user?.admin){
+    throw new MessageException({
+      code: 403,
+      message: "Forbidden",
+    });
+  }
+  const { dentist_id, firstName, lastName, SSN, email,admin,password} = data
+  const dentist = await DentistSchema.findByIdAndUpdate(
+    dentist_id,
+    { firstName, lastName, SSN, email,admin,password},
+    { new: true }
+  )
+  return dentist
+
+}
+
+  // delete user with a specific ID
+const deleteDentist: MessageHandler = async  (data,requestInfo)=> {
+  
+
+  if(!requestInfo.user?.admin){
+    throw new MessageException({
+      code: 403,
+      message: "Forbidden",
+    });
+  }
     const {dentist_id}= data;
     
     const dentist = await DentistSchema.findByIdAndDelete(dentist_id)
-
+    
     if (!dentist) {
       throw new MessageException({
         code: 400,
@@ -134,28 +163,30 @@ const deleteDentist: MessageHandler = async  (data)=> {
     return 'Dentist has been deleted'
   }
 
-
-// updates a dentist with given the ID
-const  updateDentist :MessageHandler=async (data)=> {
+  const deleteAllDentists: MessageHandler = async (data, requestInfo) => {
+    if (!requestInfo.user?.admin) {
+      throw new MessageException({
+        code: 403,
+        message: "Forbidden",
+      });
+    }
   
-  const { dentist_id, firstName, lastName, SSN, email} = data
-  const dentist = await DentistSchema.findByIdAndUpdate(
-    dentist_id,
-    { firstName, lastName, SSN, email},
-    { new: true }
-  )
-  return dentist
-
-}
-
-const verifyToken:MessageHandler=async (data)=> {
-
-  const parsed = JSON.stringify(data)
-  const token = JSON.parse(parsed)
-  const decoded = jwt.verify(token.token, 'secret')
-  return decoded
-
-}
+    await DentistSchema.deleteMany(data);
+  
+    if (DentistSchema === null) {
+      throw new MessageException({
+        code: 400,
+        message: "DataBase already empty",
+      });
+    }
+  
+    return "All Users deleted";
+  };
 
 
-export default { createDentist, login,getDentist,updateDentist,deleteDentist,verifyToken };
+ 
+
+
+
+
+export default { createDentist, login,getDentist,updateDentist,deleteDentist,deleteAllDentists};

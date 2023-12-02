@@ -16,7 +16,7 @@ const messageMapping: { [key: string]: MessageHandler } = {
   "dentists/me/:dentist_id": dentistController.getDentist,
   "dentists/update/:dentist_id": dentistController.updateDentist,
   "dentists/delete/:dentist_id": dentistController.deleteDentist,
-  "dentists/verify": dentistController.verifyToken,
+  
 };
 
 client.on("connect", () => {
@@ -27,10 +27,10 @@ client.on("message", async (topic, message) => {
   console.log(message.toString());
   const handler = messageMapping[topic];
   if (handler) {
-    const {payload,responseTopic} = JSON.parse(message.toString()) as MessagePayload;
+    const {payload,responseTopic,requestInfo} = JSON.parse(message.toString()) as MessagePayload;
     try {
       
-      const result = await handler(payload);
+      const result = await handler(payload,requestInfo);
       client.publish(responseTopic, JSON.stringify({data:result}), { qos: 2 });
     } catch (error) {
       

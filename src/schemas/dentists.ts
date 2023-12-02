@@ -23,6 +23,7 @@ const dentistSchema = new Schema({
         type: String,
         required: [true, "Password must be set"]
     },
+    admin: { type: Boolean, default: false },
     slot: [
         {
             type: Schema.Types.ObjectId,
