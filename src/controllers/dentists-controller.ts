@@ -2,12 +2,18 @@ import DentistSchema, { Dentist } from "../schemas/dentists";
 import { MessageException } from "../exceptions/MessageException";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { MessageHandler,MessageData } from "../utilities/types-utils";
+import { MessageHandler,MessageData,RequestInfo } from "../utilities/types-utils";
 
 const createDentist: MessageHandler = async (data,requestInfo) => {
-  
+  console.log("start",requestInfo.user);
+  if(!requestInfo.user?.admin){
+    throw new MessageException({
+      code: 403,
+      message: "Forbidden",
+    });
+  }
  
-  const { firstName, lastName, SSN, email, password,admin, slot } =
+  const { firstName, lastName, SSN, email, password,admin,clinic_id } =
     data;
 
   // validate the data of the patient
@@ -45,7 +51,8 @@ const createDentist: MessageHandler = async (data,requestInfo) => {
     SSN,
     email,
     password: passwordHash,
-    admin
+    admin,
+    clinic_id
   
   });
 
@@ -122,10 +129,29 @@ const  updateDentist :MessageHandler=async (data,requestInfo)=> {
       message: "Forbidden",
     });
   }
-  const { dentist_id, firstName, lastName, SSN, email,admin,password} = data
+  const { dentist_id, firstName, lastName, SSN, email,admin,password,clinic_id} = data
+
+  const existingDentist = await DentistSchema.findById(dentist_id);
+  if (!existingDentist) {
+    throw new MessageException({
+      code: 400,
+      message: " Dentist not found",
+    });
+  }
+
+  if (
+    !(firstName && lastName && SSN && email && password&& typeof admin === "boolean")
+  ) {
+    // throw
+    throw new MessageException({
+      code: 403,
+      message: "Input missing data, All data required",
+    });
+  }
+  const passwordHash = await bcrypt.hash(`${password}`, 10);
   const dentist = await DentistSchema.findByIdAndUpdate(
     dentist_id,
-    { firstName, lastName, SSN, email,admin,password},
+    { firstName, lastName, SSN, email,admin,password:passwordHash,clinic_id},
     { new: true }
   )
   return dentist

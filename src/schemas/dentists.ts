@@ -24,12 +24,11 @@ const dentistSchema = new Schema({
         required: [true, "Password must be set"]
     },
     admin: { type: Boolean, default: false },
-    slot: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "slots",
-        },
-    ],
+   
+    clinic_id: {
+        type: String,
+         
+      },
     
 });
 
