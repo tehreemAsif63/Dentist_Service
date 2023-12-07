@@ -8,6 +8,10 @@ import {
   RequestInfo,
 } from "../utilities/types-utils";
 
+/*
+Testable methods have beem marked.
+**/
+
 export const createDentist: MessageHandler = async (data, requestInfo) => {
   console.log("start", requestInfo.user);
   if (!requestInfo.user?.admin) {
@@ -71,7 +75,7 @@ export const createDentist: MessageHandler = async (data, requestInfo) => {
 };
 
 // Dentist login
-const login: MessageHandler = async (data) => {
+export const login: MessageHandler = async (data) => {
   const { SSN, email, password } = data;
   // Validate Dentist input
   if (typeof password != "string") {
@@ -107,7 +111,7 @@ const login: MessageHandler = async (data) => {
 };
 
 // return user with a specific ID
-const getDentist: MessageHandler = async (data) => {
+export const getDentist: MessageHandler = async (data) => {
   const { dentist_id } = data;
   const dentist = await DentistSchema.findById(dentist_id);
 
@@ -129,7 +133,7 @@ const getDentist: MessageHandler = async (data) => {
 };
 
 // updates a dentist with given the ID
-const updateDentist: MessageHandler = async (data, requestInfo) => {
+export const updateDentist: MessageHandler = async (data, requestInfo) => {
   if (!requestInfo.user?.admin) {
     throw new MessageException({
       code: 403,
@@ -189,7 +193,7 @@ const updateDentist: MessageHandler = async (data, requestInfo) => {
 };
 
 // delete user with a specific ID
-const deleteDentist: MessageHandler = async (data, requestInfo) => {
+export const deleteDentist: MessageHandler = async (data, requestInfo) => {
   if (!requestInfo.user?.admin) {
     throw new MessageException({
       code: 403,
