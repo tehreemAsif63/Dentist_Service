@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="4.607">
+  <testsuite name="createDentist" errors="0" failures="0" skipped="0" timestamp="2023-12-06T23:46:54" time="2.87" tests="2">
+    <testcase classname="createDentist should throw Input missing, All data required" name="createDentist should throw Input missing, All data required" time="0.032">
+    </testcase>
+    <testcase classname="createDentist should return forbidden" name="createDentist should return forbidden" time="0.012">
+    </testcase>
+  </testsuite>
+  <testsuite name="createUser" errors="0" failures="0" skipped="0" timestamp="2023-12-06T23:46:54" time="3.984" tests="2">
+    <testcase classname="createUser should return dentist alredy exists" name="createUser should return dentist alredy exists" time="0.034">
+    </testcase>
+    <testcase classname="createUser should hash the password before saving the user" name="createUser should hash the password before saving the user" time="0.003">
+    </testcase>
+  </testsuite>
+</testsuites>
