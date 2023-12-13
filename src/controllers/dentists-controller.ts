@@ -79,10 +79,10 @@ const login: MessageHandler = async (data) => {
   }
 
   // Check if Dentist exist in our DB
-  const dentist = await DentistSchema.findOne({ SSN, email });
+  const dentist = await DentistSchema.findOne({ $or: [{ SSN }, { email }] });
   if (!dentist) {
     throw new MessageException({
-      code: 401,
+      code: 404,
       message: "Invalid records",
     });
   }
