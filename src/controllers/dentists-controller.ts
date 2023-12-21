@@ -97,6 +97,21 @@ const login: MessageHandler = async (data) => {
   return dentist;
 };
 
+const getAllDentists: MessageHandler = async (data, requestInfo) => {
+  
+
+ const dentists= await DentistSchema.find(data);
+
+  if (DentistSchema === null) {
+    throw new MessageException({
+      code: 400,
+      message: "DataBase is empty",
+    });
+  }
+
+  return dentists;
+};
+
 // return user with a specific ID
 const getDentist:MessageHandler =async  (data)=> {
   
@@ -215,4 +230,4 @@ const deleteDentist: MessageHandler = async  (data,requestInfo)=> {
 
 
 
-export default { createDentist, login,getDentist,updateDentist,deleteDentist,deleteAllDentists};
+export default { createDentist, login,getDentist,updateDentist,deleteDentist,deleteAllDentists,getAllDentists};
