@@ -32,15 +32,8 @@ client.on("message", async (topic, message) => {
     const { payload, responseTopic, requestInfo } = JSON.parse(
       message.toString()
     ) as MessagePayload;
-    const { payload, responseTopic, requestInfo } = JSON.parse(
-      message.toString()
-    ) as MessagePayload;
     try {
       console.log("message", message.toString());
-      const result = await handler(payload, requestInfo);
-      client.publish(responseTopic, JSON.stringify({ data: result }), {
-        qos: 2,
-      });
       const result = await handler(payload, requestInfo);
       client.publish(responseTopic, JSON.stringify({ data: result }), {
         qos: 2,
