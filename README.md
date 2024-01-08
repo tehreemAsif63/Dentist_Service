@@ -27,16 +27,16 @@ The createDentist method is designed to allow administrators to add new dentists
 
 The login method is responsible for authenticating dentists into the system. Dentists can log in by providing their email address and password. The system verifies the provided credentials against the stored information in the database. Successful authentication allows the dentist to access personalized features and functionalities within the system. The email address serves as the unique identifier during the login process, ensuring the correct dentist's account is retrieved.<br>
 
-### getDentist Method
+### GetDentist Method
 
 The getDentist method facilitates the retrieval of a specific dentist's information from the database. Dentists are identified based on their email address. This method is particularly useful after a successful login. When a dentist logs in, the system uses their email address to fetch the corresponding dentist's details, ensuring that the correct information is displayed to the authenticated user. <br>
 
-### deleteDentist Method
+### DeleteDentist Method
 
 The deleteDentist method enables administrators to remove a dentist from the system. It requires the dentist's ID as a parameter for identification. If the provided ID matches a valid dentist in the system, the method proceeds to delete the corresponding dentist's record. However, if the provided ID is invalid or doesn't exist in the database, the system throws an "Invalid ID" error. <br>
-### updateDentist Method
+### UpdateDentist Method
 
-The updateDentist method allows dentists to modify their information within the system. Dentists can update details such as their name, email address, SSN, affiliated clinic, and administrative privileges. This functionality ensures that the system's database reflects the most accurate and up-to-date information about each dentist.
+The updateDentist method allows dentists to modify their information within the system. Dentists can update details such as their name, email address, SSN, affiliated clinic, and administrative privileges. This functionality ensures that the system's database reflects the most accurate and up-to-date information about each dentist. <br>
 
 ## Test
 
@@ -120,8 +120,12 @@ We expect the result of the method getDentist to be the same as the mockDentist.
 
 #### Dentists-Controller & Dentist Schema
 
-Ahmed Ebrahim Ahmed Al Gabri(WRITE YOUR EMAIL) has created all of the methods for the dentists-controller and dentistSchema.
+Ahmed Ebrahim Ahmed Al Gabri has created all of the methods for the dentists-controller and dentistSchema.
 
 #### Jest Tests & CI Pipeline
 
 David Boram Hong(guscholcda@student.gu.se) has created all of the tests and CI pipeline.
+
+#### DentistDocumentation
+
+David Boram Hong(guscholcda@student.gu.se) and Tehreem ASif (gusasite@student.gu.se) has taken care of all the documentation for this service.
