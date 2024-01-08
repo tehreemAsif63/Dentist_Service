@@ -92,10 +92,10 @@ export const login: MessageHandler = async (data) => {
   }
 
   // Check if Dentist exist in our DB
-  const dentist = await DentistSchema.findOne({ SSN, email });
+  const dentist = await DentistSchema.findOne({ $or: [{ SSN }, { email }] });
   if (!dentist) {
     throw new MessageException({
-      code: 401,
+      code: 404,
       message: "Invalid records",
     });
   }
@@ -108,6 +108,19 @@ export const login: MessageHandler = async (data) => {
     });
   }
   return dentist;
+};
+
+const getAllDentists: MessageHandler = async (data, requestInfo) => {
+  const dentists = await DentistSchema.find(data);
+
+  if (DentistSchema === null) {
+    throw new MessageException({
+      code: 400,
+      message: "DataBase is empty",
+    });
+  }
+
+  return dentists;
 };
 
 // return user with a specific ID
@@ -248,4 +261,5 @@ export default {
   updateDentist,
   deleteDentist,
   deleteAllDentists,
+  getAllDentists,
 };
