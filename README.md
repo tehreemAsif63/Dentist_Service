@@ -29,9 +29,7 @@ The login method is responsible for authenticating dentists into the system. Den
 
 ### getDentist Method
 
-TODO:
-
-- Explain the getDentist method.
+The getDentist method facilitates the retrieval of a specific dentist's information from the database. Dentists are identified based on their email address. This method is particularly useful after a successful login. When a dentist logs in, the system uses their email address to fetch the corresponding dentist's details, ensuring that the correct information is displayed to the authenticated user. <br>
 
 ### deleteDentist Method
 
