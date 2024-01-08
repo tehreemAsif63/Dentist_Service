@@ -15,6 +15,7 @@ const messageMapping: { [key: string]: MessageHandler } = {
   "dentists/login": dentistController.login,
   "dentists/me/getOne": dentistController.getDentist,
   "dentists/all": dentistController.getAllDentists,
+  "dentists/clinic": dentistController.getClinicDentists,
   "dentists/update/:dentist_id": dentistController.updateDentist,
   "dentists/delete/:dentist_id": dentistController.deleteDentist,
   
