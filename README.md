@@ -36,10 +36,7 @@ The getDentist method facilitates the retrieval of a specific dentist's informat
 The deleteDentist method enables administrators to remove a dentist from the system. It requires the dentist's ID as a parameter for identification. If the provided ID matches a valid dentist in the system, the method proceeds to delete the corresponding dentist's record. However, if the provided ID is invalid or doesn't exist in the database, the system throws an "Invalid ID" error. <br>
 ### updateDentist Method
 
-TODO:
-
-- Explain the updateDentist method.
-
+The updateDentist method allows dentists to modify their information within the system. Dentists can update details such as their name, email address, SSN, affiliated clinic, and administrative privileges. This functionality ensures that the system's database reflects the most accurate and up-to-date information about each dentist.
 
 ## Test
 
