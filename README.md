@@ -2,32 +2,26 @@
 
 ## Getting started
 
-Our service is intended for the use of general public to book appointments with the dentists. <br>
-For the appointments to be booked, we need to have dentists who creates the appointment slots to the system. <br>
-Therefore, dentists are one of the critical stakeholders of the system and we have created the service for dentists to signup, login, and modify their information. <br>
+Our service is designed for the general public to book appointments with dentists. To facilitate appointments, we require dentists to create appointment slots within the system. Dentists are critical stakeholders in the system, and we've developed this service for them to sign up, log in, and modify their information.
 
 ## Technology used
 
-Instead of the traditional CRUD methods from the HTTP, we have decided to use MQTT to communicate between the systems. <br>
+Instead of traditional CRUD methods through HTTP, we've opted to use MQTT for communication between systems. <br>
 
 TODO:
 (You can just copy paste whatever you wrote on user-service)
 
-- Explain about why we have decided to use MQTT instead of HTTP.
-- Explain the advantages of using HTTP.
-- Explain the potential limitations.
+- MQTT is chosen for its low bandwidth usage, real-time communication, and asynchronous messaging, making it well-suited for efficient and timely updates in distributed systems like dentist appointment management.
+- MQTT offers low bandwidth usage, real-time communication, asynchronous messaging, reliability, persistent connections, scalability, and a small code , making it ideal for distributed systems handling appointments with several independent components which required communication.
+- MQTT may pose security concerns if not configured properly, lacks inherent statefulness, is not designed for strict request-response interactions, and might require a learning curve for development teams unfamiliar with the publish/subscribe paradigm.
 
 ## The controllers
 
-Creating accounts, modifying them, logging in, updating accounts, ... ... ... <br>
-These functionallities all need to have controllers that manages them. <br>
-Therefore, we have created the controllers for the dentists with several methods(endpoints). <br>
+Various functionalities such as creating accounts, modifying them, logging in, and updating accounts require controllers to manage them. Therefore, we've implemented controllers for dentists with several methods (endpoints).<br>
 
 ### CreateDentist Method
 
-TODO:
-
-- Explain the createDentist method.
+The createDentist method is designed to allow administrators to add new dentists to the system. When an administrator invokes this method, they provide essential details such as the dentist's name, email address, Social Security Number (SSN), affiliated clinic, and information regarding whether the dentist has administrative privileges. This information is crucial for maintaining a comprehensive database of dentists within the system. The method is secured to only allow administrators to execute it, ensuring proper access control.<br>
 
 ### Login Method
 
@@ -53,17 +47,6 @@ TODO:
 
 - Explain the updateDentist method.
 
-### deleteAllDentists Method
-
-TODO:
-
-- Explain the deleteAllDentists method.
-
-## Routes
-
-TODO:
-
-- Explain the routes written in the app.ts file.
 
 ## Test
 
