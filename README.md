@@ -25,9 +25,7 @@ The createDentist method is designed to allow administrators to add new dentists
 
 ### Login Method
 
-TODO:
-
-- Explain the login method.
+The login method is responsible for authenticating dentists into the system. Dentists can log in by providing their email address and password. The system verifies the provided credentials against the stored information in the database. Successful authentication allows the dentist to access personalized features and functionalities within the system. The email address serves as the unique identifier during the login process, ensuring the correct dentist's account is retrieved.<br>
 
 ### getDentist Method
 
