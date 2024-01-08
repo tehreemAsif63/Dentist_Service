@@ -1,7 +1,5 @@
 # Dentist_Service
 
-## Getting started
-
 Our service is designed for the general public to book appointments with dentists. To facilitate appointments, we require dentists to create appointment slots within the system. Dentists are critical stakeholders in the system, and we've developed this service for them to sign up, log in, and modify their information.
 
 ## Technology used
