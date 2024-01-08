@@ -33,10 +33,7 @@ The getDentist method facilitates the retrieval of a specific dentist's informat
 
 ### deleteDentist Method
 
-TODO:
-
-- Explain the deleteDentist method.
-
+The deleteDentist method enables administrators to remove a dentist from the system. It requires the dentist's ID as a parameter for identification. If the provided ID matches a valid dentist in the system, the method proceeds to delete the corresponding dentist's record. However, if the provided ID is invalid or doesn't exist in the database, the system throws an "Invalid ID" error. <br>
 ### updateDentist Method
 
 TODO:
