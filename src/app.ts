@@ -7,7 +7,9 @@ import {
   MessagePayload,
 } from "./utilities/types-utils";
 import { MessageException } from "./exceptions/MessageException";
-const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/Dentists";
+const mongoURI =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://DIT356:gusdit356@clusterdit356.zpifkti.mongodb.net/Dentists?retryWrites=true&w=majority";
 const client = mqtt.connect(process.env.MQTT_URI || "mqtt://localhost:1883");
 
 const messageMapping: { [key: string]: MessageHandler } = {
@@ -18,7 +20,6 @@ const messageMapping: { [key: string]: MessageHandler } = {
   "dentists/clinic": dentistController.getClinicDentists,
   "dentists/update/:dentist_id": dentistController.updateDentist,
   "dentists/delete/:dentist_id": dentistController.deleteDentist,
-  
 };
 
 client.on("connect", () => {
@@ -29,13 +30,16 @@ client.on("message", async (topic, message) => {
   console.log(message.toString());
   const handler = messageMapping[topic];
   if (handler) {
-    const {payload,responseTopic,requestInfo} = JSON.parse(message.toString()) as MessagePayload;
+    const { payload, responseTopic, requestInfo } = JSON.parse(
+      message.toString()
+    ) as MessagePayload;
     try {
       console.log("message", message.toString());
-      const result = await handler(payload,requestInfo);
-      client.publish(responseTopic, JSON.stringify({data:result}), { qos: 2 });
+      const result = await handler(payload, requestInfo);
+      client.publish(responseTopic, JSON.stringify({ data: result }), {
+        qos: 2,
+      });
     } catch (error) {
-      
       if (error instanceof MessageException) {
         client.publish(
           responseTopic,
@@ -63,8 +67,6 @@ client.on("message", async (topic, message) => {
 
   //client.end();}
 });
-
-
 
 // Connect to MongoDB
 mongoose

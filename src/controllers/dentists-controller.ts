@@ -12,13 +12,19 @@ const createDentist: MessageHandler = async (data,requestInfo) => {
       message: "Forbidden",
     });
   }
- 
-  const { firstName, lastName, SSN, email, password,admin,clinic_id } =
-    data;
+
+  const { firstName, lastName, SSN, email, password, admin, clinic_id } = data;
 
   // validate the data of the patient
   if (
-    !(firstName && lastName && SSN && email && password&& typeof admin === "boolean")
+    !(
+      firstName &&
+      lastName &&
+      SSN &&
+      email &&
+      password &&
+      typeof admin === "boolean"
+    )
   ) {
     // throw
     throw new MessageException({
@@ -52,8 +58,7 @@ const createDentist: MessageHandler = async (data,requestInfo) => {
     email,
     password: passwordHash,
     admin,
-    clinic_id
-  
+    clinic_id,
   });
 
   dentist.save();
@@ -62,7 +67,7 @@ const createDentist: MessageHandler = async (data,requestInfo) => {
 };
 
 // Dentist login
-const login: MessageHandler = async (data) => {
+export const login: MessageHandler = async (data) => {
   const { SSN, email, password } = data;
   // Validate Dentist input
   if (typeof password != "string") {
@@ -98,9 +103,7 @@ const login: MessageHandler = async (data) => {
 };
 
 const getAllDentists: MessageHandler = async (data, requestInfo) => {
-  
-
- const dentists= await DentistSchema.find(data);
+  const dentists = await DentistSchema.find(data);
 
   if (DentistSchema === null) {
     throw new MessageException({
@@ -118,12 +121,12 @@ const getDentist:MessageHandler =async  (data)=> {
   const {dentist_id}= data;
     const dentist = await DentistSchema.findById(dentist_id)
 
-    if (!dentist) {
-      throw new MessageException({
-        code: 400,
-        message: 'Invalid user ID',
-      })
-    }
+  if (!dentist) {
+    throw new MessageException({
+      code: 400,
+      message: "Invalid user ID",
+    });
+  }
 
     if (dentist === null) {
       throw new MessageException({
@@ -167,15 +170,23 @@ const getDentist:MessageHandler =async  (data)=> {
 
 
 // updates a dentist with given the ID
-const  updateDentist :MessageHandler=async (data,requestInfo)=> {
-  
-  if(!requestInfo.user?.admin){
+export const updateDentist: MessageHandler = async (data, requestInfo) => {
+  if (!requestInfo.user?.admin) {
     throw new MessageException({
       code: 403,
       message: "Forbidden",
     });
   }
-  const { dentist_id, firstName, lastName, SSN, email,admin,password,clinic_id} = data
+  const {
+    dentist_id,
+    firstName,
+    lastName,
+    SSN,
+    email,
+    admin,
+    password,
+    clinic_id,
+  } = data;
 
   const existingDentist = await DentistSchema.findById(dentist_id);
   if (!existingDentist) {
@@ -186,7 +197,14 @@ const  updateDentist :MessageHandler=async (data,requestInfo)=> {
   }
 
   if (
-    !(firstName && lastName && SSN && email && password&& typeof admin === "boolean")
+    !(
+      firstName &&
+      lastName &&
+      SSN &&
+      email &&
+      password &&
+      typeof admin === "boolean"
+    )
   ) {
     // throw
     throw new MessageException({
@@ -197,63 +215,68 @@ const  updateDentist :MessageHandler=async (data,requestInfo)=> {
   const passwordHash = await bcrypt.hash(`${password}`, 10);
   const dentist = await DentistSchema.findByIdAndUpdate(
     dentist_id,
-    { firstName, lastName, SSN, email,admin,password:passwordHash,clinic_id},
+    {
+      firstName,
+      lastName,
+      SSN,
+      email,
+      admin,
+      password: passwordHash,
+      clinic_id,
+    },
     { new: true }
-  )
-  return dentist
+  );
+  return dentist;
+};
 
-}
-
-  // delete user with a specific ID
-const deleteDentist: MessageHandler = async  (data,requestInfo)=> {
-  
-
-  if(!requestInfo.user?.admin){
+// delete user with a specific ID
+export const deleteDentist: MessageHandler = async (data, requestInfo) => {
+  if (!requestInfo.user?.admin) {
     throw new MessageException({
       code: 403,
       message: "Forbidden",
     });
   }
-    const {dentist_id}= data;
-    
-    const dentist = await DentistSchema.findByIdAndDelete(dentist_id)
-    
-    if (!dentist) {
-      throw new MessageException({
-        code: 400,
-        message: 'Invalid id',
-      })
-    }
+  const { dentist_id } = data;
 
-    if (dentist === null) {
-      throw new MessageException({
-        code: 400,
-        message: 'Dentist does not exist',
-      })
-    }
+  const dentist = await DentistSchema.findByIdAndDelete(dentist_id);
 
-    return 'Dentist has been deleted'
+  if (!dentist) {
+    throw new MessageException({
+      code: 400,
+      message: "Invalid id",
+    });
   }
 
-  const deleteAllDentists: MessageHandler = async (data, requestInfo) => {
-    if (!requestInfo.user?.admin) {
-      throw new MessageException({
-        code: 403,
-        message: "Forbidden",
-      });
-    }
-  
-    await DentistSchema.deleteMany(data);
-  
-    if (DentistSchema === null) {
-      throw new MessageException({
-        code: 400,
-        message: "DataBase already empty",
-      });
-    }
-  
-    return "All Users deleted";
-  };
+  if (dentist === null) {
+    throw new MessageException({
+      code: 400,
+      message: "Dentist does not exist",
+    });
+  }
+
+  return "Dentist has been deleted";
+};
+
+const deleteAllDentists: MessageHandler = async (data, requestInfo) => {
+  if (!requestInfo.user?.admin) {
+    throw new MessageException({
+      code: 403,
+      message: "Forbidden",
+    });
+  }
+
+  await DentistSchema.deleteMany(data);
+
+  if (DentistSchema === null) {
+    throw new MessageException({
+      code: 400,
+      message: "DataBase already empty",
+    });
+  }
+
+  return "All Users deleted";
+};
 
 
  
