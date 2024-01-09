@@ -2,11 +2,15 @@ import DentistSchema, { Dentist } from "../schemas/dentists";
 import { MessageException } from "../exceptions/MessageException";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { MessageHandler,MessageData,RequestInfo } from "../utilities/types-utils";
+import {
+  MessageHandler,
+  MessageData,
+  RequestInfo,
+} from "../utilities/types-utils";
 import mongoose, { FilterQuery } from "mongoose";
-const createDentist: MessageHandler = async (data,requestInfo) => {
-  console.log("start",requestInfo.user);
-  if(!requestInfo.user?.admin){
+export const createDentist: MessageHandler = async (data, requestInfo) => {
+  console.log("start", requestInfo.user);
+  if (!requestInfo.user?.admin) {
     throw new MessageException({
       code: 403,
       message: "Forbidden",
@@ -102,7 +106,7 @@ export const login: MessageHandler = async (data) => {
   return dentist;
 };
 
-const getAllDentists: MessageHandler = async (data, requestInfo) => {
+export const getAllDentists: MessageHandler = async (data, requestInfo) => {
   const dentists = await DentistSchema.find(data);
 
   if (DentistSchema === null) {
@@ -115,11 +119,9 @@ const getAllDentists: MessageHandler = async (data, requestInfo) => {
   return dentists;
 };
 
-
-const getDentist:MessageHandler =async  (data)=> {
-  
-  const {dentist_id}= data;
-    const dentist = await DentistSchema.findById(dentist_id)
+export const getDentist: MessageHandler = async (data) => {
+  const { dentist_id } = data;
+  const dentist = await DentistSchema.findById(dentist_id);
 
   if (!dentist) {
     throw new MessageException({
@@ -128,46 +130,38 @@ const getDentist:MessageHandler =async  (data)=> {
     });
   }
 
-    if (dentist === null) {
-      throw new MessageException({
-        code: 400,
-        message: 'User does not exist',
-      })
-    }
-
-    return dentist
+  if (dentist === null) {
+    throw new MessageException({
+      code: 400,
+      message: "User does not exist",
+    });
   }
 
+  return dentist;
+};
 
-
-
-  const getClinicDentists:MessageHandler =async  (data)=> {
-  
-    let query: FilterQuery<Dentist> = {};
+export const getClinicDentists: MessageHandler = async (data) => {
+  let query: FilterQuery<Dentist> = {};
   query = { clinic_id: data.clinic_id };
 
-    
-      const dentists = await DentistSchema.find(query)
-  
-      if (!dentists) {
-        throw new MessageException({
-          code: 400,
-          message: 'Invalid clinic ID',
-        })
-      }
-  
-      if (dentists === null) {
-        throw new MessageException({
-          code: 400,
-          message: 'Dentists does not exist',
-        })
-      }
-  
-      return dentists;
-    }
+  const dentists = await DentistSchema.find(query);
 
+  if (!dentists) {
+    throw new MessageException({
+      code: 400,
+      message: "Invalid clinic ID",
+    });
+  }
 
+  if (dentists === null) {
+    throw new MessageException({
+      code: 400,
+      message: "Dentists does not exist",
+    });
+  }
 
+  return dentists;
+};
 
 // updates a dentist with given the ID
 export const updateDentist: MessageHandler = async (data, requestInfo) => {
@@ -258,7 +252,7 @@ export const deleteDentist: MessageHandler = async (data, requestInfo) => {
   return "Dentist has been deleted";
 };
 
-const deleteAllDentists: MessageHandler = async (data, requestInfo) => {
+export const deleteAllDentists: MessageHandler = async (data, requestInfo) => {
   if (!requestInfo.user?.admin) {
     throw new MessageException({
       code: 403,
@@ -278,10 +272,13 @@ const deleteAllDentists: MessageHandler = async (data, requestInfo) => {
   return "All Users deleted";
 };
 
-
- 
-
-
-
-
-export default { createDentist, login,getDentist,updateDentist,deleteDentist,deleteAllDentists,getAllDentists,getClinicDentists};
+export default {
+  createDentist,
+  login,
+  getDentist,
+  updateDentist,
+  deleteDentist,
+  deleteAllDentists,
+  getAllDentists,
+  getClinicDentists,
+};
